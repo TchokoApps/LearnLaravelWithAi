@@ -35,15 +35,27 @@
 
                                     <div class="pt-0">
 
-                                        <!-- Session Status -->
-                                        @if (session('status'))
-                                            <div class="alert alert-success mb-3" role="alert">
-                                                {{ session('status') }}
-                                            </div>
-                                        @endif
-
-                                        <form method="POST" action="{{ route('login') }}" class="my-4">
+                                        <form method="POST" action="{{ route('login') }}" class="my-4" id="loginForm">
                                             @csrf
+
+                                            {{-- Credential / general error alert (from lesson) --}}
+                                            @if ($errors->any())
+                                                <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                                                    <i class="ri-error-warning-line me-1"></i>
+                                                    @foreach ($errors->all() as $error)
+                                                        <span>{{ $error }}</span><br>
+                                                    @endforeach
+                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                </div>
+                                            @endif
+
+                                            {{-- Rate-limit / throttle message --}}
+                                            @if (session('status'))
+                                                <div class="alert alert-info alert-dismissible fade show mb-3" role="alert">
+                                                    <i class="ri-information-line me-1"></i> {{ session('status') }}
+                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                                </div>
+                                            @endif
 
                                             <!-- Email Address -->
                                             <div class="form-group mb-3">
@@ -58,23 +70,30 @@
                                                        autocomplete="username"
                                                        placeholder="{{ __('Enter your email') }}">
                                                 @error('email')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                    <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
 
-                                            <!-- Password -->
+                                            <!-- Password with show/hide toggle -->
                                             <div class="form-group mb-3">
                                                 <label for="password" class="form-label">{{ __('Password') }}</label>
-                                                <input class="form-control @error('password') is-invalid @enderror"
-                                                       type="password"
-                                                       id="password"
-                                                       name="password"
-                                                       required
-                                                       autocomplete="current-password"
-                                                       placeholder="{{ __('Enter your password') }}">
-                                                @error('password')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <div class="input-group">
+                                                    <input class="form-control @error('password') is-invalid @enderror"
+                                                           type="password"
+                                                           id="password"
+                                                           name="password"
+                                                           required
+                                                           autocomplete="current-password"
+                                                           placeholder="{{ __('Enter your password') }}">
+                                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword" tabindex="-1" title="{{ __('Show/hide password') }}">
+                                                        <i class="ri-eye-line" id="togglePasswordIcon"></i>
+                                                    </button>
+                                                    @error('password')
+                                                        <div class="invalid-feedback">
+                                                            <small class="text-danger">{{ $message }}</small>
+                                                        </div>
+                                                    @enderror
+                                                </div>
                                             </div>
 
                                             <!-- Remember Me & Forgot Password -->
@@ -92,11 +111,17 @@
                                                 @endif
                                             </div>
 
-                                            <!-- Submit -->
+                                            <!-- Submit with loading state -->
                                             <div class="form-group mb-0 row">
                                                 <div class="col-12">
                                                     <div class="d-grid">
-                                                        <button class="btn btn-primary" type="submit">{{ __('Log In') }}</button>
+                                                        <button class="btn btn-primary" type="submit" id="loginBtn">
+                                                            <span id="loginBtnText">{{ __('Log In') }}</span>
+                                                            <span id="loginBtnSpinner" class="d-none">
+                                                                <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                                                                {{ __('Logging in...') }}
+                                                            </span>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -174,5 +199,30 @@
 
         <!-- App js -->
         <script src="{{ asset('backend/assets/js/app.js') }}"></script>
+
+        <script>
+            // Show / hide password toggle
+            document.getElementById('togglePassword').addEventListener('click', function () {
+                const pwd = document.getElementById('password');
+                const icon = document.getElementById('togglePasswordIcon');
+                if (pwd.type === 'password') {
+                    pwd.type = 'text';
+                    icon.classList.replace('ri-eye-line', 'ri-eye-off-line');
+                } else {
+                    pwd.type = 'password';
+                    icon.classList.replace('ri-eye-off-line', 'ri-eye-line');
+                }
+            });
+
+            // Loading state on submit
+            document.getElementById('loginForm').addEventListener('submit', function () {
+                const btn  = document.getElementById('loginBtn');
+                const text = document.getElementById('loginBtnText');
+                const spin = document.getElementById('loginBtnSpinner');
+                btn.disabled = true;
+                text.classList.add('d-none');
+                spin.classList.remove('d-none');
+            });
+        </script>
     </body>
 </html>
