@@ -9,6 +9,9 @@
         <link rel="shortcut icon" href="{{ asset('backend/assets/images/favicon.ico') }}">
         <link href="{{ asset('backend/assets/css/app.min.css') }}" rel="stylesheet" type="text/css" id="app-style" />
         <link href="{{ asset('backend/assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+
+        <!-- Toastr CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     </head>
 
     <body data-menu-color="light" data-sidebar="default">
@@ -42,7 +45,7 @@
                             <!-- User Dropdown -->
                             <li class="dropdown notification-list topbar-dropdown">
                                 <a class="nav-link dropdown-toggle nav-user me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                                    <img src="{{ asset('backend/assets/images/users/user-11.jpg') }}" alt="user-image" class="rounded-circle">
+                                    <img src="{{ auth()->user()->photo ? Storage::url(auth()->user()->photo) : asset('backend/assets/images/users/user-11.jpg') }}" alt="user-image" class="rounded-circle">
                                     <span class="pro-user-name ms-1">
                                         {{ auth()->user()->name }} <i class="mdi mdi-chevron-down"></i>
                                     </span>
@@ -136,11 +139,20 @@
                                         <!-- Profile Header -->
                                         <div class="align-items-center">
                                             <div class="d-flex align-items-center">
-                                                <img src="{{ asset('backend/assets/images/users/user-11.jpg') }}" class="rounded-circle avatar-xxl img-thumbnail float-start" alt="profile image">
-                                                <div class="overflow-hidden ms-4">
+                                                <div class="position-relative me-4">
+                                                    <img id="profilePhotoPreview"
+                                                         src="{{ auth()->user()->photo ? Storage::url(auth()->user()->photo) : asset('backend/assets/images/users/user-11.jpg') }}"
+                                                         class="rounded-circle avatar-xxl img-thumbnail"
+                                                         alt="profile image"
+                                                         style="width:80px;height:80px;object-fit:cover;">
+                                                </div>
+                                                <div class="overflow-hidden">
                                                     <h4 class="m-0 text-dark fs-20">{{ auth()->user()->name }}</h4>
                                                     <p class="my-1 text-muted fs-16">{{ auth()->user()->email }}</p>
-                                                    <span class="badge bg-primary-subtle text-primary px-2 py-1 fs-13 fw-normal">{{ __('Member') }}</span>
+                                                    <span class="badge bg-primary-subtle text-primary px-2 py-1 fs-13 fw-normal">{{ __(ucfirst(auth()->user()->role ?? 'Member')) }}</span>
+                                                    @if(auth()->user()->status == 0)
+                                                        <span class="badge bg-danger-subtle text-danger px-2 py-1 fs-13 fw-normal ms-1">{{ __('Inactive') }}</span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -158,14 +170,6 @@
                                                             </div>
                                                             <div class="card-body">
 
-                                                                {{-- Success flash --}}
-                                                                @if (session('status') === 'profile-updated')
-                                                                    <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
-                                                                        <i class="ri-checkbox-circle-line me-1"></i> {{ __('Profile updated successfully.') }}
-                                                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                                                    </div>
-                                                                @endif
-
                                                                 {{-- Validation errors --}}
                                                                 @if ($errors->any() && !$errors->updatePassword->any() && !$errors->userDeletion->any())
                                                                     <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
@@ -176,14 +180,15 @@
                                                                     </div>
                                                                 @endif
 
-                                                                <form method="POST" action="{{ route('profile.update') }}" id="profileInfoForm">
+                                                                {{-- Hidden send-verification form (must be outside profileInfoForm) --}}
+                                                                <form id="send-verification" method="post" action="{{ route('verification.send') }}">
+                                                                    @csrf
+                                                                </form>
+
+                                                                <form method="POST" action="{{ route('profile.update') }}" id="profileInfoForm"
+                                                                      enctype="multipart/form-data">
                                                                     @csrf
                                                                     @method('patch')
-
-                                                                    {{-- Hidden send-verification form --}}
-                                                                    <form id="send-verification" method="post" action="{{ route('verification.send') }}">
-                                                                        @csrf
-                                                                    </form>
 
                                                                     <div class="form-group mb-3">
                                                                         <label for="profile_name" class="form-label">{{ __('Name') }}</label>
@@ -225,6 +230,61 @@
                                                                                 @endif
                                                                             </div>
                                                                         @endif
+                                                                    </div>
+
+                                                                    <div class="form-group mb-3">
+                                                                        <label for="profile_phone" class="form-label">{{ __('Phone') }}</label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-text"><i class="mdi mdi-phone-outline"></i></span>
+                                                                            <input class="form-control @error('phone') is-invalid @enderror"
+                                                                                   type="text" id="profile_phone" name="phone"
+                                                                                   value="{{ old('phone', auth()->user()->phone) }}"
+                                                                                   autocomplete="tel"
+                                                                                   placeholder="{{ __('e.g. +1 234 567 8900') }}">
+                                                                            @error('phone')
+                                                                                <div class="invalid-feedback"><small>{{ $message }}</small></div>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group mb-3">
+                                                                        <label for="profile_address" class="form-label">{{ __('Address') }}</label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-text align-items-start pt-2"><i class="mdi mdi-map-marker-outline"></i></span>
+                                                                            <textarea class="form-control @error('address') is-invalid @enderror"
+                                                                                      id="profile_address" name="address" rows="3"
+                                                                                      placeholder="{{ __('Enter your address') }}">{{ old('address', auth()->user()->address) }}</textarea>
+                                                                            @error('address')
+                                                                                <div class="invalid-feedback"><small>{{ $message }}</small></div>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Photo Upload -->
+                                                                    <div class="form-group mb-4">
+                                                                        <label class="form-label">{{ __('Profile Photo') }}</label>
+                                                                        <div class="d-flex align-items-center gap-3">
+                                                                            <img id="formPhotoPreview"
+                                                                                 src="{{ auth()->user()->photo ? Storage::url(auth()->user()->photo) : asset('backend/assets/images/users/user-11.jpg') }}"
+                                                                                 class="rounded-circle img-thumbnail flex-shrink-0"
+                                                                                 style="width:80px;height:80px;object-fit:cover;"
+                                                                                 alt="{{ __('Profile Photo') }}">
+                                                                            <div>
+                                                                                {{-- File input is NOT inside the label to avoid click-swallowing --}}
+                                                                                <input type="file" id="photo_input" name="photo"
+                                                                                       accept="image/jpeg,image/png,image/gif,image/webp"
+                                                                                       class="d-none">
+                                                                                <button type="button" class="btn btn-outline-primary btn-sm"
+                                                                                        onclick="document.getElementById('photo_input').click()">
+                                                                                    <i class="ri-upload-2-line me-1"></i>{{ __('Choose Photo') }}
+                                                                                </button>
+                                                                                <p id="photoFileName" class="text-muted small mb-0 mt-1">{{ __('No file chosen') }}</p>
+                                                                                <p class="text-muted small mb-0">{{ __('JPG, PNG, GIF or WebP — max 2 MB') }}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        @error('photo')
+                                                                            <div class="mt-1"><small class="text-danger">{{ $message }}</small></div>
+                                                                        @enderror
                                                                     </div>
 
                                                                     <div class="form-group">
@@ -431,7 +491,38 @@
         <!-- App js -->
         <script src="{{ asset('backend/assets/js/app.js') }}"></script>
 
+        <!-- Toastr JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+        <!-- Toast notifications from session -->
         <script>
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "timeOut": "4000"
+            };
+            @if (session('message'))
+                toastr["{{ session('alert-type', 'info') }}"]("{!! session('message') !!}");
+            @endif
+        </script>
+
+        <script>
+            // Live photo preview + filename feedback
+            document.getElementById('photo_input').addEventListener('change', function () {
+                const file = this.files[0];
+                if (!file) return;
+                // Show chosen filename
+                document.getElementById('photoFileName').textContent = file.name;
+                // Live preview in form and topbar header
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('formPhotoPreview').src    = e.target.result;
+                    document.getElementById('profilePhotoPreview').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+
             // Generic show/hide password toggle helper
             function makeToggle(btnId, inputId, iconId) {
                 document.getElementById(btnId).addEventListener('click', function () {

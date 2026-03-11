@@ -37,10 +37,10 @@
                     <div class="collapse" id="sidebarDashboards">
                         <ul class="nav-second-level">
                             <li>
-                                <a href="index.html" class="tp-link">Analytical</a>
+                                <a href="{{ route('testimonials.index') }}" class="tp-link">All Testimonials</a>
                             </li>
                             <li>
-                                <a href="ecommerce.html" class="tp-link">E-commerce</a>
+                                <a href="{{ route('testimonials.create') }}" class="tp-link">Add Testimonial</a>
                             </li>
                         </ul>
                     </div>
@@ -153,6 +153,8 @@
                         <span> Calendar </span>
                     </a>
                 </li>
+
+                <li class="menu-title mt-2">Content Management</li>
 
                 <li class="menu-title mt-2">General</li>
 

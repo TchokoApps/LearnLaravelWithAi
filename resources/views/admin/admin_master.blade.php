@@ -19,6 +19,9 @@
         <!-- Icons -->
         <link href="{{ asset('backend/assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 
+        <!-- Toastr CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
     </head>
 
     <!-- body start -->
@@ -72,6 +75,22 @@
 
         <!-- App js-->
         <script src="{{ asset('backend/assets/js/app.js') }}"></script>
+
+        <!-- Toastr JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+        <!-- Toast notifications from session -->
+        <script>
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "timeOut": "4000"
+            };
+            @if (session('message'))
+                toastr["{{ session('alert-type', 'info') }}"]("{!! session('message') !!}");
+            @endif
+        </script>
 
     </body>
 </html>
