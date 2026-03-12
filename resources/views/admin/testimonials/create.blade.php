@@ -17,7 +17,7 @@
 
         <!-- start row -->
         <div class="row">
-            <div class="col-xl-8">
+            <div class="col-xl-12">
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title">Create New Testimonial</h5>

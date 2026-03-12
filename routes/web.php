@@ -2,11 +2,11 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TestimonialController;
+use App\Http\Controllers\Admin\HeroSectionController;
+use App\Http\Controllers\FrontendController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('frontend.body.index');
-});
+Route::get('/', [FrontendController::class, 'index']);
 
 Route::get('/dashboard', function () {
     return view('admin.index');
@@ -22,6 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('admin/testimonials', TestimonialController::class);
+    Route::resource('admin/hero-sections', HeroSectionController::class);
 });
 
 require __DIR__.'/auth.php';

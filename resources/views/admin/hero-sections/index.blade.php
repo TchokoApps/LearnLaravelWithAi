@@ -6,63 +6,68 @@
 
         <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
             <div class="flex-grow-1">
-                <h4 class="fs-18 fw-semibold m-0">All Testimonials</h4>
+                <h4 class="fs-18 fw-semibold m-0">Hero Sections</h4>
             </div>
             <div class="text-end">
-                <a href="{{ route('testimonials.create') }}" class="btn btn-sm btn-primary">
-                    <i data-feather="plus" class="me-1" style="height: 16px; width: 16px;"></i>Add Testimonial
+                <a href="{{ route('hero-sections.create') }}" class="btn btn-sm btn-primary">
+                    <i data-feather="plus" class="me-1" style="height: 16px; width: 16px;"></i>Add Hero Section
                 </a>
             </div>
         </div>
 
-        <!-- Datatables  -->
+        @if ($message = Session::get('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ $message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        <!-- Datatable -->
         <div class="row">
             <div class="col-12">
                 <div class="card">
 
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Testimonials</h5>
+                        <h5 class="card-title mb-0">All Hero Sections</h5>
                     </div><!-- end card header -->
 
                     <div class="card-body">
-                        <table id="datatable" class="table table-bordered dt-responsive table-responsive nowrap">
+                        <table class="table table-bordered dt-responsive table-responsive nowrap">
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Name</th>
                                     <th>Title</th>
+                                    <th>Button Text</th>
                                     <th>Image</th>
-                                    <th>Text</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($testimonials as $index => $testimonial)
+                                @forelse ($heroSections as $index => $section)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $testimonial->name }}</td>
-                                        <td>{{ $testimonial->title }}</td>
+                                        <td>{{ $section->title }}</td>
+                                        <td>{{ $section->button_text }}</td>
                                         <td>
-                                            @if ($testimonial->image && \Storage::disk('public')->exists($testimonial->image))
-                                                <img src="{{ asset('storage/' . $testimonial->image) }}"
-                                                    alt="{{ $testimonial->name }}"
+                                            @if ($section->hero_image && \Storage::disk('public')->exists($section->hero_image))
+                                                <img src="{{ asset('storage/' . $section->hero_image) }}"
+                                                    alt="{{ $section->title }}"
                                                     style="height: 40px; width: 40px; border-radius: 4px; object-fit: cover;">
                                             @else
                                                 <span class="badge bg-light text-dark">No Image</span>
                                             @endif
                                         </td>
-                                        <td>{{ Str::limit($testimonial->text, 80) }}</td>
                                         <td>
                                             <div class="d-flex gap-2">
-                                                <a href="{{ route('testimonials.show', $testimonial->id) }}"
+                                                <a href="{{ route('hero-sections.show', $section->id) }}"
                                                     class="btn btn-sm btn-info" title="View">
                                                     <i data-feather="eye" style="height: 16px; width: 16px;"></i>
                                                 </a>
-                                                <a href="{{ route('testimonials.edit', $testimonial->id) }}"
+                                                <a href="{{ route('hero-sections.edit', $section->id) }}"
                                                     class="btn btn-sm btn-warning" title="Edit">
                                                     <i data-feather="edit" style="height: 16px; width: 16px;"></i>
                                                 </a>
-                                                <form action="{{ route('testimonials.destroy', $testimonial->id) }}"
+                                                <form action="{{ route('hero-sections.destroy', $section->id) }}"
                                                     method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
@@ -76,8 +81,8 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center py-4">
-                                            <p class="text-muted mb-0">No testimonials found.</p>
+                                        <td colspan="5" class="text-center py-4">
+                                            <p class="text-muted mb-0">No hero sections found.</p>
                                         </td>
                                     </tr>
                                 @endforelse
@@ -89,6 +94,7 @@
             </div>
 
         </div>
-        <!-- end Datatables -->
+        <!-- end Datatable -->
+
     </div> <!-- container-fluid -->
 @endsection

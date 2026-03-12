@@ -17,11 +17,11 @@
 
         <!-- start row -->
         <div class="row">
-            <div class="col-xl-8">
+            <div class="col-xl-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="row mb-4">
-                            <div class="col-md-4 text-center">
+                            <div class="col-md-3 text-center">
                                 @if ($testimonial->image && \Storage::disk('public')->exists($testimonial->image))
                                     <img src="{{ asset('storage/' . $testimonial->image) }}" alt="{{ $testimonial->name }}" style="height: 200px; width: auto; border-radius: 8px; object-fit: cover;">
                                 @else
@@ -30,7 +30,7 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-9">
                                 <div class="mb-3">
                                     <label class="text-muted small">Name</label>
                                     <h5 class="fw-semibold">{{ $testimonial->name }}</h5>
