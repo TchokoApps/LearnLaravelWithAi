@@ -29,12 +29,21 @@
                 <li class="menu-title">Menu</li>
 
                 <li>
-                    <a href="#sidebarDashboards" data-bs-toggle="collapse">
+                    <a href="{{ route('dashboard') }}" class="tp-link">
                         <i data-feather="home"></i>
                         <span> Dashboard </span>
+                    </a>
+                </li>
+
+                <li class="menu-title">Pages</li>
+
+                <li>
+                    <a href="#sidebarTestimonials" data-bs-toggle="collapse">
+                        <i data-feather="users"></i>
+                        <span> Testimonials Setup </span>
                         <span class="menu-arrow"></span>
                     </a>
-                    <div class="collapse" id="sidebarDashboards">
+                    <div class="collapse" id="sidebarTestimonials">
                         <ul class="nav-second-level">
                             <li>
                                 <a href="{{ route('testimonials.index') }}" class="tp-link">All Testimonials</a>
@@ -46,36 +55,19 @@
                     </div>
                 </li>
 
-                <li class="menu-title">Pages</li>
-
-                <li>
-                    <a href="#sidebarAuth" data-bs-toggle="collapse">
+                           <li>
+                    <a href="#sidebarHeroSection" data-bs-toggle="collapse">
                         <i data-feather="users"></i>
-                        <span> Authentication </span>
+                        <span> Hero Section Setup </span>
                         <span class="menu-arrow"></span>
                     </a>
-                    <div class="collapse" id="sidebarAuth">
+                    <div class="collapse" id="sidebarHeroSection">
                         <ul class="nav-second-level">
                             <li>
-                                <a href="auth-login.html" class="tp-link">Log In</a>
+                                <a href="{{ route('hero-sections.index') }}" class="tp-link">All Hero Sections</a>
                             </li>
                             <li>
-                                <a href="auth-register.html" class="tp-link">Register</a>
-                            </li>
-                            <li>
-                                <a href="auth-recoverpw.html" class="tp-link">Recover Password</a>
-                            </li>
-                            <li>
-                                <a href="auth-lock-screen.html" class="tp-link">Lock Screen</a>
-                            </li>
-                            <li>
-                                <a href="auth-confirm-mail.html" class="tp-link">Confirm Mail</a>
-                            </li>
-                            <li>
-                                <a href="email-verification.html" class="tp-link">Email Verification</a>
-                            </li>
-                            <li>
-                                <a href="auth-logout.html" class="tp-link">Logout</a>
+                                <a href="{{ route('hero-sections.create') }}" class="tp-link">Add Hero Section</a>
                             </li>
                         </ul>
                     </div>
