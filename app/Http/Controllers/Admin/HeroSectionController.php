@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\HeroSection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class HeroSectionController extends Controller
 {
@@ -49,7 +50,7 @@ class HeroSectionController extends Controller
 
         HeroSection::create($validated);
 
-        return redirect()->route('hero-sections.index')->with('success', 'Hero section created successfully!');
+        return redirect()->route('admin.hero-sections.index')->with('success', 'Hero section created successfully!');
     }
 
     /**
@@ -80,19 +81,37 @@ class HeroSectionController extends Controller
             'button_url' => 'required|string|max:255',
             'hero_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'hero_shape' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'delete_hero_image' => 'nullable|boolean',
+            'delete_hero_shape' => 'nullable|boolean',
         ]);
 
-        if ($request->hasFile('hero_image')) {
+        // Delete hero_image if checkbox is checked
+        if ($request->has('delete_hero_image') && $heroSection->hero_image) {
+            \Storage::disk('public')->delete($heroSection->hero_image);
+            $validated['hero_image'] = null;
+        } elseif ($request->hasFile('hero_image')) {
+            // Delete old image before storing new one
+            if ($heroSection->hero_image) {
+                \Storage::disk('public')->delete($heroSection->hero_image);
+            }
             $validated['hero_image'] = $request->file('hero_image')->store('hero', 'public');
         }
 
-        if ($request->hasFile('hero_shape')) {
+        // Delete hero_shape if checkbox is checked
+        if ($request->has('delete_hero_shape') && $heroSection->hero_shape) {
+            \Storage::disk('public')->delete($heroSection->hero_shape);
+            $validated['hero_shape'] = null;
+        } elseif ($request->hasFile('hero_shape')) {
+            // Delete old shape before storing new one
+            if ($heroSection->hero_shape) {
+                \Storage::disk('public')->delete($heroSection->hero_shape);
+            }
             $validated['hero_shape'] = $request->file('hero_shape')->store('hero', 'public');
         }
 
         $heroSection->update($validated);
 
-        return redirect()->route('hero-sections.index')->with('success', 'Hero section updated successfully!');
+        return redirect()->route('admin.hero-sections.index')->with('success', 'Hero section updated successfully!');
     }
 
     /**
@@ -101,7 +120,7 @@ class HeroSectionController extends Controller
     public function destroy(HeroSection $heroSection)
     {
         $heroSection->delete();
-        return redirect()->route('hero-sections.index')->with('success', 'Hero section deleted successfully!');
+        return redirect()->route('admin.hero-sections.index')->with('success', 'Hero section deleted successfully!');
     }
 }
 

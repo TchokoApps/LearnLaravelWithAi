@@ -9,7 +9,7 @@
                 <h4 class="fs-18 fw-semibold m-0">Hero Sections</h4>
             </div>
             <div class="text-end">
-                <a href="{{ route('hero-sections.create') }}" class="btn btn-sm btn-primary">
+                <a href="{{ route('admin.hero-sections.create') }}" class="btn btn-sm btn-primary">
                     <i data-feather="plus" class="me-1" style="height: 16px; width: 16px;"></i>Add Hero Section
                 </a>
             </div>
@@ -59,15 +59,15 @@
                                         </td>
                                         <td>
                                             <div class="d-flex gap-2">
-                                                <a href="{{ route('hero-sections.show', $section->id) }}"
+                                                <a href="{{ route('admin.hero-sections.show', $section->id) }}"
                                                     class="btn btn-sm btn-info" title="View">
                                                     <i data-feather="eye" style="height: 16px; width: 16px;"></i>
                                                 </a>
-                                                <a href="{{ route('hero-sections.edit', $section->id) }}"
+                                                <a href="{{ route('admin.hero-sections.edit', $section->id) }}"
                                                     class="btn btn-sm btn-warning" title="Edit">
                                                     <i data-feather="edit" style="height: 16px; width: 16px;"></i>
                                                 </a>
-                                                <form action="{{ route('hero-sections.destroy', $section->id) }}"
+                                                <form action="{{ route('admin.hero-sections.destroy', $section->id) }}"
                                                     method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')

@@ -9,7 +9,7 @@
                 <h4 class="fs-18 fw-semibold m-0">Edit Testimonial</h4>
             </div>
             <div class="text-end">
-                <a href="{{ route('testimonials.index') }}" class="btn btn-sm btn-secondary">
+                <a href="{{ route('admin.testimonials.index') }}" class="btn btn-sm btn-secondary">
                     <i data-feather="arrow-left" class="me-1" style="height: 16px; width: 16px;"></i>Back to List
                 </a>
             </div>
@@ -23,7 +23,7 @@
                         <h5 class="card-title">Edit Testimonial</h5>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('testimonials.update', $testimonial->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('admin.testimonials.update', $testimonial->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -57,6 +57,12 @@
                                     <div class="mb-2">
                                         <img src="{{ asset('storage/' . $testimonial->image) }}" alt="{{ $testimonial->name }}" style="height: 100px; width: auto; border-radius: 4px; object-fit: cover;">
                                         <p class="form-text text-muted mt-1">Current Image</p>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="delete_image" name="delete_image" value="1">
+                                            <label class="form-check-label" for="delete_image">
+                                                Delete this image
+                                            </label>
+                                        </div>
                                     </div>
                                 @endif
                                 <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*">
@@ -70,7 +76,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     <i data-feather="save" class="me-1" style="height: 16px; width: 16px;"></i>Update Testimonial
                                 </button>
-                                <a href="{{ route('testimonials.index') }}" class="btn btn-light">Cancel</a>
+                                <a href="{{ route('admin.testimonials.index') }}" class="btn btn-light">Cancel</a>
                             </div>
                         </form>
                     </div>

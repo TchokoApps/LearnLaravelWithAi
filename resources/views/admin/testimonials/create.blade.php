@@ -9,7 +9,7 @@
                 <h4 class="fs-18 fw-semibold m-0">Add Testimonial</h4>
             </div>
             <div class="text-end">
-                <a href="{{ route('testimonials.index') }}" class="btn btn-sm btn-secondary">
+                <a href="{{ route('admin.testimonials.index') }}" class="btn btn-sm btn-secondary">
                     <i data-feather="arrow-left" class="me-1" style="height: 16px; width: 16px;"></i>Back to List
                 </a>
             </div>
@@ -23,7 +23,7 @@
                         <h5 class="card-title">Create New Testimonial</h5>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('testimonials.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('admin.testimonials.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <div class="mb-3">
@@ -63,7 +63,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     <i data-feather="save" class="me-1" style="height: 16px; width: 16px;"></i>Create Testimonial
                                 </button>
-                                <a href="{{ route('testimonials.index') }}" class="btn btn-light">Cancel</a>
+                                <a href="{{ route('admin.testimonials.index') }}" class="btn btn-light">Cancel</a>
                             </div>
                         </form>
                     </div>

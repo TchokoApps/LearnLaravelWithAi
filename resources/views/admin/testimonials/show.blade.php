@@ -9,7 +9,7 @@
                 <h4 class="fs-18 fw-semibold m-0">Testimonial Details</h4>
             </div>
             <div class="text-end">
-                <a href="{{ route('testimonials.index') }}" class="btn btn-sm btn-secondary">
+                <a href="{{ route('admin.testimonials.index') }}" class="btn btn-sm btn-secondary">
                     <i data-feather="arrow-left" class="me-1" style="height: 16px; width: 16px;"></i>Back to List
                 </a>
             </div>
@@ -60,17 +60,17 @@
                         </div>
 
                         <div class="d-flex gap-2">
-                            <a href="{{ route('testimonials.edit', $testimonial->id) }}" class="btn btn-warning">
+                            <a href="{{ route('admin.testimonials.edit', $testimonial->id) }}" class="btn btn-warning">
                                 <i data-feather="edit" class="me-1" style="height: 16px; width: 16px;"></i>Edit
                             </a>
-                            <form action="{{ route('testimonials.destroy', $testimonial->id) }}" method="POST" style="display:inline;">
+                            <form action="{{ route('admin.testimonials.destroy', $testimonial->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this testimonial?')">
                                     <i data-feather="trash-2" class="me-1" style="height: 16px; width: 16px;"></i>Delete
                                 </button>
                             </form>
-                            <a href="{{ route('testimonials.index') }}" class="btn btn-light">Back to List</a>
+                            <a href="{{ route('admin.testimonials.index') }}" class="btn btn-light">Back to List</a>
                         </div>
                     </div>
                 </div>

@@ -46,16 +46,16 @@
                     <div class="collapse" id="sidebarTestimonials">
                         <ul class="nav-second-level">
                             <li>
-                                <a href="{{ route('testimonials.index') }}" class="tp-link">All Testimonials</a>
+                                <a href="{{ route('admin.testimonials.index') }}" class="tp-link">All Testimonials</a>
                             </li>
                             <li>
-                                <a href="{{ route('testimonials.create') }}" class="tp-link">Add Testimonial</a>
+                                <a href="{{ route('admin.testimonials.create') }}" class="tp-link">Add Testimonial</a>
                             </li>
                         </ul>
                     </div>
                 </li>
 
-                           <li>
+                <li>
                     <a href="#sidebarHeroSection" data-bs-toggle="collapse">
                         <i data-feather="users"></i>
                         <span> Hero Section Setup </span>
@@ -64,10 +64,28 @@
                     <div class="collapse" id="sidebarHeroSection">
                         <ul class="nav-second-level">
                             <li>
-                                <a href="{{ route('hero-sections.index') }}" class="tp-link">All Hero Sections</a>
+                                <a href="{{ route('admin.hero-sections.index') }}" class="tp-link">All Heros</a>
                             </li>
                             <li>
-                                <a href="{{ route('hero-sections.create') }}" class="tp-link">Add Hero Section</a>
+                                <a href="{{ route('admin.hero-sections.create') }}" class="tp-link">Add Hero</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                                <li>
+                    <a href="#sidebarFeature" data-bs-toggle="collapse">
+                        <i data-feather="users"></i>
+                        <span> Feature Setup </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse" id="sidebarFeature">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a href="{{ route('admin.feature-sections.index') }}" class="tp-link">All Features</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.feature-sections.create') }}" class="tp-link">Add Feature</a>
                             </li>
                         </ul>
                     </div>

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -47,7 +48,7 @@ class TestimonialController extends Controller
 
         Testimonial::create($validated);
 
-        return redirect()->route('testimonials.index')
+        return redirect()->route('admin.testimonials.index')
                         ->with('message', 'Testimonial created successfully!')
                         ->with('alert-type', 'success');
     }
@@ -78,22 +79,24 @@ class TestimonialController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'name' => 'required|string|max:255',
             'title' => 'required|string|max:255',
+            'delete_image' => 'nullable|boolean',
         ]);
 
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            // Delete old image if exists
+        // Delete image if checkbox is checked
+        if ($request->has('delete_image') && $testimonial->image) {
+            Storage::disk('public')->delete($testimonial->image);
+            $validated['image'] = null;
+        } elseif ($request->hasFile('image')) {
+            // Delete old image before storing new one
             if ($testimonial->image && Storage::disk('public')->exists($testimonial->image)) {
                 Storage::disk('public')->delete($testimonial->image);
             }
-
-            $imagePath = $request->file('image')->store('testimonials', 'public');
-            $validated['image'] = $imagePath;
+            $validated['image'] = $request->file('image')->store('testimonials', 'public');
         }
 
         $testimonial->update($validated);
 
-        return redirect()->route('testimonials.index')
+        return redirect()->route('admin.testimonials.index')
                         ->with('message', 'Testimonial updated successfully!')
                         ->with('alert-type', 'success');
     }
@@ -110,7 +113,7 @@ class TestimonialController extends Controller
 
         $testimonial->delete();
 
-        return redirect()->route('testimonials.index')
+        return redirect()->route('admin.testimonials.index')
                         ->with('message', 'Testimonial deleted successfully!')
                         ->with('alert-type', 'success');
     }

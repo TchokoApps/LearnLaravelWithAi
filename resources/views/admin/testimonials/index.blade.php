@@ -9,7 +9,7 @@
                 <h4 class="fs-18 fw-semibold m-0">All Testimonials</h4>
             </div>
             <div class="text-end">
-                <a href="{{ route('testimonials.create') }}" class="btn btn-sm btn-primary">
+                <a href="{{ route('admin.testimonials.create') }}" class="btn btn-sm btn-primary">
                     <i data-feather="plus" class="me-1" style="height: 16px; width: 16px;"></i>Add Testimonial
                 </a>
             </div>
@@ -54,15 +54,15 @@
                                         <td>{{ Str::limit($testimonial->text, 80) }}</td>
                                         <td>
                                             <div class="d-flex gap-2">
-                                                <a href="{{ route('testimonials.show', $testimonial->id) }}"
+                                                <a href="{{ route('admin.testimonials.show', $testimonial->id) }}"
                                                     class="btn btn-sm btn-info" title="View">
                                                     <i data-feather="eye" style="height: 16px; width: 16px;"></i>
                                                 </a>
-                                                <a href="{{ route('testimonials.edit', $testimonial->id) }}"
+                                                <a href="{{ route('admin.testimonials.edit', $testimonial->id) }}"
                                                     class="btn btn-sm btn-warning" title="Edit">
                                                     <i data-feather="edit" style="height: 16px; width: 16px;"></i>
                                                 </a>
-                                                <form action="{{ route('testimonials.destroy', $testimonial->id) }}"
+                                                <form action="{{ route('admin.testimonials.destroy', $testimonial->id) }}"
                                                     method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')

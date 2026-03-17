@@ -9,7 +9,7 @@
                 <h4 class="fs-18 fw-semibold m-0">Edit Hero Section</h4>
             </div>
             <div class="text-end">
-                <a href="{{ route('hero-sections.index') }}" class="btn btn-sm btn-secondary">
+                <a href="{{ route('admin.hero-sections.index') }}" class="btn btn-sm btn-secondary">
                     <i data-feather="arrow-left" class="me-1" style="height: 16px; width: 16px;"></i>Back to List
                 </a>
             </div>
@@ -23,7 +23,7 @@
                         <h5 class="card-title">Edit Hero Section</h5>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('hero-sections.update', $heroSection->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('admin.hero-sections.update', $heroSection->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
@@ -65,6 +65,12 @@
                                     <div class="mb-2">
                                         <img src="{{ asset('storage/' . $heroSection->hero_image) }}" alt="{{ $heroSection->title }}" style="height: 100px; width: auto; border-radius: 4px; object-fit: cover;">
                                         <p class="form-text text-muted mt-1">Current Image</p>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="delete_hero_image" name="delete_hero_image" value="1">
+                                            <label class="form-check-label" for="delete_hero_image">
+                                                Delete this image
+                                            </label>
+                                        </div>
                                     </div>
                                 @endif
                                 <input type="file" class="form-control @error('hero_image') is-invalid @enderror" id="hero_image" name="hero_image" accept="image/*">
@@ -80,6 +86,12 @@
                                     <div class="mb-2">
                                         <img src="{{ asset('storage/' . $heroSection->hero_shape) }}" alt="{{ $heroSection->title }}" style="height: 100px; width: auto; border-radius: 4px; object-fit: cover;">
                                         <p class="form-text text-muted mt-1">Current Shape</p>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="delete_hero_shape" name="delete_hero_shape" value="1">
+                                            <label class="form-check-label" for="delete_hero_shape">
+                                                Delete this shape
+                                            </label>
+                                        </div>
                                     </div>
                                 @endif
                                 <input type="file" class="form-control @error('hero_shape') is-invalid @enderror" id="hero_shape" name="hero_shape" accept="image/*,.svg">
@@ -93,7 +105,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     <i data-feather="save" class="me-1" style="height: 16px; width: 16px;"></i>Update Hero Section
                                 </button>
-                                <a href="{{ route('hero-sections.index') }}" class="btn btn-light">Cancel</a>
+                                <a href="{{ route('admin.hero-sections.index') }}" class="btn btn-light">Cancel</a>
                             </div>
                         </form>
                     </div>
