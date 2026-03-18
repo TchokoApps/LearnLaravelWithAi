@@ -92,6 +92,24 @@
                 </li>
 
                 <li>
+                    <a href="#sidebarFaq" data-bs-toggle="collapse">
+                        <i data-feather="help-circle"></i>
+                        <span> FAQ Setup </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse" id="sidebarFaq">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a href="{{ route('faqs.index') }}" class="tp-link">All FAQs</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('faqs.create') }}" class="tp-link">Add FAQ</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li>
                     <a href="#sidebarError" data-bs-toggle="collapse">
                         <i data-feather="alert-octagon"></i>
                         <span> Error Pages </span>
